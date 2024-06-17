@@ -3,7 +3,8 @@
 import { useState } from "react";
 import MainHeader from "@/components/MainHeader";
 import Button from "@/components/Button";
-import { signIn } from "@/util/firebase/firebase";
+import { signIn, signInWithGoogle } from "@/util/firebase/firebase";
+import { GoogleLoginButton } from "react-social-login-buttons";
 
 export default function SignIn() {
     const [email, setEmail] = useState("");
@@ -20,10 +21,14 @@ export default function SignIn() {
         resetForm();
     };
 
+    const signInByGoogle = () => {
+        signInWithGoogle();
+    }
+
     return (
         <main className="flex flex-col items-center p-24 h-svh">
             <MainHeader headerText="Log In" />
-            <form className="flex flex-col items-center gap-4">
+            <form className="flex flex-col items-center gap-4 mb-4">
                 <input
                     className="p-2 border-2 rounded-lg"
                     type="email"
@@ -40,6 +45,13 @@ export default function SignIn() {
                 />
                 <Button buttonText={"Sign In"} onClick={userSignIn} />
             </form>
+            <div className="flex w-74">
+                <GoogleLoginButton onClick={signInByGoogle} style={{
+                    fontSize: '1rem',
+                    borderRadius: '0.375rem', 
+                    fontWeight: 'bold' 
+                }} />
+            </div>
         </main>
     );
 }
