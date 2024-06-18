@@ -4,6 +4,7 @@ import { useState } from "react";
 import Button from "@/components/Button";
 import MainHeader from "@/components/MainHeader";
 import { signUp } from "@/util/firebase/firebase";
+import Link from "next/link";
 
 export default function SignUp() {
     const [email, setEmail] = useState("");
@@ -40,6 +41,7 @@ export default function SignUp() {
                 />
                 <Button buttonText={"Sign Up"} onClick={signUpUser} />
             </form>
+            <Link href="/sign-in" className="align-left">Already have an account</Link>
         </main>
     );
 }

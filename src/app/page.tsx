@@ -2,22 +2,13 @@
 import Button from "@/components/Button";
 import MainHeader from "@/components/MainHeader";
 import { auth } from "@/config/firebase";
-import { onAuthStateChanged, signOut } from "firebase/auth";
+import { signOut } from "firebase/auth";
 import Link from "next/link";
-import { useState } from "react";
+import { useAuthState } from 'react-firebase-hooks/auth';
+import Image from "next/image";
 
 export default function Home() {
-  const [user, setUser] = useState<any>(null);
-
-  onAuthStateChanged(auth, (user: any) => {
-    if (user) {
-      setUser(user);
-      console.log(user)
-    } else {
-      console.log("User is signed out");
-      setUser(null)
-    }
-  });
+  const [user, loading, error] = useAuthState(auth);
 
   const signOutUser = () => {
     signOut(auth)
@@ -36,7 +27,8 @@ export default function Home() {
         <Link href="/sign-up">
           <Button buttonText="Sign Up" />
         </Link>
-        {user ? <Button buttonText="Log out" onClick={signOutUser} /> : <Link href={"/sign-in"}><Button buttonText="Log In" /></Link>}
+        {user ? <><Button buttonText="Log out" onClick={signOutUser} /></> : <Link href={"/sign-in"}><Button buttonText="Log In" /></Link>}
+        {user?.photoURL ? <Image src={user.photoURL ? user.photoURL : "/images/avatar.png"} alt="User profile picture" width={50} height={50} /> : null}
         <Link href="/profile">
           <Button buttonText="User Profile" />
         </Link>
