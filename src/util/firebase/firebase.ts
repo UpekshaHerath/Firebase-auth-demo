@@ -3,6 +3,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signInWithPopup,
+  signOut,
 } from "firebase/auth";
 
 interface UserNamePasswordAuthProps {
@@ -32,10 +33,20 @@ const signIn = async ({ email, password }: UserNamePasswordAuthProps) => {
 
 const signInWithGoogle = async () => {
   signInWithPopup(auth, provider)
-    .then((userCredential) => console.log(userCredential.user))
+    .then((userCredential) => userCredential.user)
+    .catch((error) => {
+      return error;
+    });
+};
+
+const signOutUser = async () => {
+  signOut(auth)
+    .then(() => {
+      console.log("User signed out");
+    })
     .catch((error) => {
       console.log(error.code + "\n" + error.message);
     });
 };
 
-export { signUp, signIn, signInWithGoogle };
+export { signUp, signIn, signInWithGoogle, signOutUser };

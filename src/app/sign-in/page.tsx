@@ -5,8 +5,10 @@ import MainHeader from "@/components/MainHeader";
 import Button from "@/components/Button";
 import { signIn, signInWithGoogle } from "@/util/firebase/firebase";
 import { GoogleLoginButton } from "react-social-login-buttons";
+import { useRouter } from "next/navigation";
 
 export default function SignIn() {
+    const router = useRouter();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -15,14 +17,15 @@ export default function SignIn() {
         setPassword("");
     }
 
-    const userSignIn = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const userSignIn = async (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
-        signIn({ email, password });
+        await signIn({ email, password });
         resetForm();
+        router.push("/profile");
     };
 
-    const signInByGoogle = () => {
-        signInWithGoogle();
+    const signInByGoogle = async () => {
+        const result: any = await signInWithGoogle();
     }
 
     return (
@@ -48,8 +51,8 @@ export default function SignIn() {
             <div className="flex w-74">
                 <GoogleLoginButton onClick={signInByGoogle} style={{
                     fontSize: '1rem',
-                    borderRadius: '0.375rem', 
-                    fontWeight: 'bold' 
+                    borderRadius: '0.375rem',
+                    fontWeight: 'bold'
                 }} />
             </div>
         </main>
